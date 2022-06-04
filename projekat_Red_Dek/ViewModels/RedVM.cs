@@ -8,10 +8,11 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace projekat_Red_Dek.ViewModels
 {
-    public class RedVM : INotifyPropertyChanged
+    public class RedVM : BaseViewModel, INotifyPropertyChanged
     {
         private string query;
         public ObservableCollection<Clan> RedPrikaz { get; set; }
@@ -25,9 +26,14 @@ namespace projekat_Red_Dek.ViewModels
         public LoadCommand LoadCommand { get; }
 
         private double windowWidth;
+        
         private double windowHeight;
         public string nazivReda { get; set; }
+        public string redZaPretrazit { get; set; }
+
         public int BrojReda { get; set; }
+        
+        public DB baza;
 
         public double WindowHeight
         {
@@ -57,12 +63,14 @@ namespace projekat_Red_Dek.ViewModels
             }
         }
 
+
         public RedVM()
         {
             CreateCommand = new CreateCommand(this);
             DelateCommand = new DelateCommand(this);
             SaveCommand = new SaveCommand(this);
             LoadCommand = new LoadCommand(this);
+            baza = new DB();
             Red = new Red();
             RedPrikaz = new ObservableCollection<Clan>();
             LinijaPrikaz = new ObservableCollection<Linija>();
@@ -78,7 +86,7 @@ namespace projekat_Red_Dek.ViewModels
         public void nacrtaj(string v)
         {
             Clan clan = new Clan();
-            NizObjekata = Dodaj(clan, Query);
+            NizObjekata = Dodaj(clan, v);
             LinijaPrikaz.Clear();
             foreach (var a in NizLinija)
             {
@@ -246,13 +254,41 @@ namespace projekat_Red_Dek.ViewModels
             SaveWindow saveWindow = new SaveWindow();
             saveWindow.ShowDialog();
             nazivReda = saveWindow.Naziv;
+            var res = baza.Create(nazivReda, NizObjekata);
+            if (res == true)
+            {
+                MessageBox.Show("Uspesno sacuvano");
+                LinijaPrikaz.Clear();
+                RedPrikaz.Clear();
+            }
+            else
+            {
+                MessageBox.Show("Neuspesno sacuvano");
+            }
+            
         }
 
         public void loadFunc()
         {
             LoadWindow loadWindow = new LoadWindow();
             loadWindow.ShowDialog();
-            nazivReda = loadWindow.Naziv;
+            redZaPretrazit = loadWindow.Naziv;
+            List<string> vrednosti = new List<string>();
+            List<string> res = baza.Read(redZaPretrazit,vrednosti);
+            if (res != null)
+            {
+                NizObjekata.Clear();
+                NizLinija.Clear();
+                for (int i = 2; i < res.Count; i++)
+                {
+                    nacrtaj(res[i]);
+                }
+                MessageBox.Show("Uspesno ucitano");
+            }
+            else
+            {
+                MessageBox.Show("Neuspesno ucitano");
+            }   
         }
         public event PropertyChangedEventHandler PropertyChanged;
 
