@@ -54,8 +54,8 @@ namespace projekat_Red_Dek.Models
 
         public Linija(Clan c1, Clan c2)
         {
-            Pocetak = new Position(c1.Pozicija.X + 15, c1.Pozicija.Y + 15);
-            Kraj = new Position(c2.Pozicija.X + 15, c2.Pozicija.Y + 15);
+            Pocetak = new Position(c1.Pozicija.X, c1.Pozicija.Y + 15);
+            Kraj = new Position(c2.Pozicija.X, c2.Pozicija.Y + 15);
             Levi = c1;
             Desni = c2;
         }

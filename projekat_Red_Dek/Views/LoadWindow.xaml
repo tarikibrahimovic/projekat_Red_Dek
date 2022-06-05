@@ -17,7 +17,7 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <Label Name="lblQuestion" Grid.Column="1">Unesite naziv Reda koji hocete da ucitate:</Label>
+        <Label Name="lblQuestion" Grid.Column="1">Unesite naziv koji hocete da ucitate:</Label>
         <TextBox Name="txtAnswer" Grid.Column="1" Grid.Row="1" MinWidth="250"/>
 
         <StackPanel Grid.Row="2" Grid.ColumnSpan="2" HorizontalAlignment="Right" Margin="0,15,0,0" Orientation="Horizontal">

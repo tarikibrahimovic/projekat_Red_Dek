@@ -24,6 +24,21 @@ namespace projekat_Red_Dek.Views
         public DekMainUC()
         {
             InitializeComponent();
+            DataContext = this.Resources["vm"];
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            Window win = Window.GetWindow(this);
+            //(win.DataContext as MainVM).SelectedViewModel = new DekVM();
+            (win.DataContext as MainVM).SelectedViewModel = new RedVM();
+        }
+
+        private void UserControl_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            var vm = this.DataContext as DekVM;
+            Window mywindow = Window.GetWindow(this);
+            vm.postaviDimenzije(mywindow.ActualHeight, mywindow.ActualWidth);
         }
     }
 }

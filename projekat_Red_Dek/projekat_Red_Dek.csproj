@@ -88,10 +88,13 @@
     <Compile Include="Models\DB.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\Commands\CreateCommand.cs" />
+    <Compile Include="ViewModels\Commands\CreateCommandDek.cs" />
     <Compile Include="ViewModels\Commands\DelateCommand.cs" />
+    <Compile Include="ViewModels\Commands\DeleteCommandDek.cs" />
     <Compile Include="ViewModels\Commands\LoadCommand.cs" />
+    <Compile Include="ViewModels\Commands\LoadCommandDek.cs" />
     <Compile Include="ViewModels\Commands\SaveCommand.cs" />
-    <Compile Include="ViewModels\Commands\UpdateViewCommand.cs" />
+    <Compile Include="ViewModels\Commands\SaveCommandDek.cs" />
     <Compile Include="ViewModels\DekVM.cs" />
     <Compile Include="ViewModels\MainVM.cs" />
     <Compile Include="ViewModels\RedVM.cs" />
@@ -100,9 +103,6 @@
     </Compile>
     <Compile Include="Views\LoadWindow.xaml.cs">
       <DependentUpon>LoadWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\RedMain.xaml.cs">
-      <DependentUpon>RedMain.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\RedMainUC.xaml.cs">
       <DependentUpon>RedMainUC.xaml</DependentUpon>
@@ -153,10 +153,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\LoadWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\RedMain.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -6,16 +6,68 @@
              xmlns:local="clr-namespace:projekat_Red_Dek.Views"
              xmlns:vm ="clr-namespace:projekat_Red_Dek.ViewModels"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800" Background="White">
-    <!--<UserControl.Resources>
+             d:DesignHeight="450" d:DesignWidth="800" Background="White" SizeChanged="UserControl_SizeChanged">
+    <UserControl.Resources>
         <vm:DekVM x:Key="vm"/>
     </UserControl.Resources>
-    <Grid DataContext="{StaticResource vm}">
-        <Label Content="DEK" FontSize="35"/>
-    </Grid>-->
-    <Grid>
+    <Grid Background="White" DataContext="{StaticResource vm}" >
+        <Grid.RowDefinitions>
+            <RowDefinition ></RowDefinition>
+            <RowDefinition Height="auto"></RowDefinition>
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Column="0" Grid.Row="2" Background="Indigo">
+            <StackPanel Orientation="Horizontal">
+                <TextBox Width="110" HorizontalAlignment="Left" Margin="0 0 10 0" Text="{Binding Query, Mode=TwoWay ,UpdateSourceTrigger=PropertyChanged}"/>
+                <Button Content="Ucitaj element" Width="100" Command="{Binding CreateCommandDek}" CommandParameter="{Binding Query}"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Button Content="Ukloni element" Width="100" HorizontalAlignment="Left" Command="{Binding DeleteCommandDek}"/>
+                <Button Content="Sacuvaj red" Width="100" HorizontalAlignment="Left" Margin="10 0 0 0" Command="{Binding SaveCommandDek}"/>
+                <Button Content="Ucitaj red" Width="100" HorizontalAlignment="Left" Margin="10 0 0 0" Command="{Binding LoadCommandDek}"/>
+                <Button Content="RED" Width="75" HorizontalAlignment="Right" Margin="100 0 10 0" Click="Button_Click"/>
+            </StackPanel>
+        </StackPanel>
 
-        <Label Content="DEK" FontSize="35"/>
-        <Button Content="red" Width="100" Height="100"/>
+        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"
+                      CanContentScroll="True" Grid.Row="0" Background="White" >
+            <Canvas VerticalAlignment="Top" HorizontalAlignment="Center"
+                    Height="{Binding CanvasHeight}" Width="auto">
+
+                <ItemsControl ItemsSource="{Binding DekPrikaz}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <Canvas/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemContainerStyle>
+                        <Style TargetType="ContentPresenter">
+                            <Setter Property="Canvas.Left" Value="{Binding Pozicija.X}" />
+                            <Setter Property="Canvas.Top" Value="{Binding Pozicija.Y}" />
+                        </Style>
+                    </ItemsControl.ItemContainerStyle>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Vrednost}"
+                                       Width="30" Height="30" Background="Tan" TextAlignment="Center"/>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+
+                <ItemsControl ItemsSource="{Binding LinijaPrikaz}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <Canvas/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Line Stroke="Black" StrokeThickness="3"
+                                  X1="{Binding Pocetak.X}" Y1="{Binding Pocetak.Y}"
+                                  X2="{Binding Kraj.X}" Y2="{Binding Kraj.Y}"/>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </Canvas>
+        </ScrollViewer>
     </Grid>
 </UserControl>

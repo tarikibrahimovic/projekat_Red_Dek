@@ -28,10 +28,8 @@ namespace projekat_Red_Dek.ViewModels
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public UpdateViewCommand UpdateViewCommand { get; set; }
         public MainVM()
         {
-            UpdateViewCommand = new UpdateViewCommand(this);
         }
     }
 }

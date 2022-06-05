@@ -26,13 +26,13 @@ namespace projekat_Red_Dek.ViewModels
         public LoadCommand LoadCommand { get; }
 
         private double windowWidth;
-        
+
         private double windowHeight;
         public string nazivReda { get; set; }
         public string redZaPretrazit { get; set; }
 
         public int BrojReda { get; set; }
-        
+
         public DB baza;
 
         public double WindowHeight
@@ -51,6 +51,14 @@ namespace projekat_Red_Dek.ViewModels
             {
                 windowWidth = value;
                 OnPropertyChanged("WindowWidnt");
+            }
+        }
+        private double canvasHeight;
+        public double CanvasHeight
+        {
+            get { return canvasHeight; }
+            set { canvasHeight = value;
+                OnPropertyChanged("CanvasHeight");
             }
         }
         public string Query
@@ -115,7 +123,7 @@ namespace projekat_Red_Dek.ViewModels
                 Clan poslednji = new Clan();
                 poslednji.Vrednost = "End";
                 poslednji.Pozicija.X = 0;
-                poslednji.Pozicija.Y = 300;
+                poslednji.Pozicija.Y = 200;
                 poslednji.Prethodni = c;
                 NizObjekata.Add(poslednji);
 
@@ -140,6 +148,7 @@ namespace projekat_Red_Dek.ViewModels
                 izbrisiLiniju(c.Prethodni, poslednji);
                 NizObjekata.Add(c);
             }
+            CanvasHeight = NizObjekata[1].Pozicija.Y + 70;
             return NizObjekata;
         }
 
@@ -173,7 +182,7 @@ namespace projekat_Red_Dek.ViewModels
                 BrojReda++;
                 poslednji.Pozicija.Y = poslednji.Prethodni.Pozicija.Y + 70;
                 poslednji.Pozicija.X = poslednji.Prethodni.Pozicija.X - 30;
-                NizObjekata[1].Pozicija.Y += 50;
+                NizObjekata[1].Pozicija.Y += 70;
             }
             else if (BrojReda % 2 == 0)
             {
@@ -182,6 +191,7 @@ namespace projekat_Red_Dek.ViewModels
                     BrojReda = 1;
                     poslednji.Pozicija.Y = poslednji.Prethodni.Pozicija.Y + 70;
                     poslednji.Pozicija.X = poslednji.Prethodni.Pozicija.X + 30;
+                    NizObjekata[1].Pozicija.Y += 70;
                 }
             }
         }
@@ -265,7 +275,7 @@ namespace projekat_Red_Dek.ViewModels
             {
                 MessageBox.Show("Neuspesno sacuvano");
             }
-            
+
         }
 
         public void loadFunc()
@@ -274,7 +284,7 @@ namespace projekat_Red_Dek.ViewModels
             loadWindow.ShowDialog();
             redZaPretrazit = loadWindow.Naziv;
             List<string> vrednosti = new List<string>();
-            List<string> res = baza.Read(redZaPretrazit,vrednosti);
+            List<string> res = baza.Read(redZaPretrazit, vrednosti);
             if (res != null)
             {
                 NizObjekata.Clear();
@@ -288,7 +298,7 @@ namespace projekat_Red_Dek.ViewModels
             else
             {
                 MessageBox.Show("Neuspesno ucitano");
-            }   
+            }
         }
         public event PropertyChangedEventHandler PropertyChanged;
 

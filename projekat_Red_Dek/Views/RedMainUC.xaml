@@ -7,9 +7,6 @@
              xmlns:vm="clr-namespace:projekat_Red_Dek.ViewModels"
              mc:Ignorable="d" 
              MinHeight="400" MinWidth="800" Background="White" SizeChanged="UserControl_SizeChanged">
-    <!--<Grid>
-        <Label Content="RED" FontSize="35"/>
-    </Grid>-->
     <UserControl.Resources>
         <vm:RedVM x:Key="vm"/>
     </UserControl.Resources>
@@ -31,8 +28,10 @@
             </StackPanel>
         </StackPanel>
 
-        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" CanContentScroll="True" Grid.Row="0">
-            <Canvas Grid.Row="0" x:Name="kanvas" VerticalAlignment="Top" HorizontalAlignment="Center">
+        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"
+                      CanContentScroll="True" Grid.Row="0" Background="White" >
+            <Canvas VerticalAlignment="Top" HorizontalAlignment="Center"
+                    Height="{Binding CanvasHeight}" Width="auto">
 
                 <ItemsControl ItemsSource="{Binding RedPrikaz}">
                     <ItemsControl.ItemsPanel>
