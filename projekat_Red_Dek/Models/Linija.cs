@@ -52,6 +52,11 @@ namespace projekat_Red_Dek.Models
             Desni = null;
         }
 
+        public Linija(double x1, double y1, double x2, double y2)
+        {
+            Pocetak = new Position(x1, y1 + 15);
+            Kraj = new Position(x2, y2 + 15);
+        }
         public Linija(Clan c1, Clan c2)
         {
             Pocetak = new Position(c1.Pozicija.X, c1.Pozicija.Y + 15);

@@ -24,6 +24,7 @@ namespace projekat_Red_Dek.ViewModels
         public DelateCommand DelateCommand { get; }
         public SaveCommand SaveCommand { get; }
         public LoadCommand LoadCommand { get; }
+        public ClearCommand ClearCommand { get; }
 
         private double windowWidth;
 
@@ -57,7 +58,9 @@ namespace projekat_Red_Dek.ViewModels
         public double CanvasHeight
         {
             get { return canvasHeight; }
-            set { canvasHeight = value;
+            set
+            {
+                canvasHeight = value;
                 OnPropertyChanged("CanvasHeight");
             }
         }
@@ -78,6 +81,7 @@ namespace projekat_Red_Dek.ViewModels
             DelateCommand = new DelateCommand(this);
             SaveCommand = new SaveCommand(this);
             LoadCommand = new LoadCommand(this);
+            ClearCommand = new ClearCommand(this);
             baza = new DB();
             Red = new Red();
             RedPrikaz = new ObservableCollection<Clan>();
@@ -89,7 +93,15 @@ namespace projekat_Red_Dek.ViewModels
 
         public void DodajObjekat()
         {
-            nacrtaj(Query);
+            if (Query.Length > 6)
+            {
+                nacrtaj(Query.Substring(0, 6));
+            }
+            else
+            {
+                nacrtaj(Query);
+            }
+            Query = "";
         }
         public void nacrtaj(string v)
         {
@@ -177,7 +189,7 @@ namespace projekat_Red_Dek.ViewModels
         public void proveriPoziciju()
         {
             Clan poslednji = NizObjekata[1].Prethodni;
-            if (poslednji.Pozicija.X >= WindowWidth / 2 - 40)
+            if (poslednji.Pozicija.X >= WindowWidth / 2 - 20)
             {
                 BrojReda++;
                 poslednji.Pozicija.Y = poslednji.Prethodni.Pozicija.Y + 70;
@@ -198,8 +210,32 @@ namespace projekat_Red_Dek.ViewModels
 
         public void nacrtajLiniju(Clan c1, Clan c2)
         {
-            Linija l = new Linija(c1, c2);
-            NizLinija.Add(l);
+            double x1 = c1.Pozicija.X;
+            double x2 = c2.Pozicija.X + 32;
+            if (NizObjekata.Count == 2)
+            {
+                Linija l = new Linija(x1, c1.Pozicija.Y, x2, c2.Pozicija.Y);
+                l.Desni = c2;
+                l.Levi = c1;
+                NizLinija.Add(l);
+            }
+            else
+            {
+                if (BrojReda % 2 == 1)
+                {
+                    Linija l = new Linija(x1 + 32, c1.Pozicija.Y, x2 - 32, c2.Pozicija.Y);
+                    NizLinija.Add(l);
+                    l.Desni = c2;
+                    l.Levi = c1;
+                }
+                else
+                {
+                    Linija l = new Linija(x1, c1.Pozicija.Y, x2, c2.Pozicija.Y);
+                    NizLinija.Add(l);
+                    l.Desni = c2;
+                    l.Levi = c1;
+                }
+            }
         }
 
         public void izbrisiLiniju(Clan c1, Clan c2)
@@ -299,6 +335,13 @@ namespace projekat_Red_Dek.ViewModels
             {
                 MessageBox.Show("Neuspesno ucitano");
             }
+        }
+        public void clearAll()
+        {
+            NizObjekata.Clear();
+            NizLinija.Clear();
+            LinijaPrikaz.Clear();
+            RedPrikaz.Clear();
         }
         public event PropertyChangedEventHandler PropertyChanged;
 

@@ -87,6 +87,8 @@
     </Compile>
     <Compile Include="Models\DB.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
+    <Compile Include="ViewModels\Commands\ClearCommand.cs" />
+    <Compile Include="ViewModels\Commands\ClearCommandDek.cs" />
     <Compile Include="ViewModels\Commands\CreateCommand.cs" />
     <Compile Include="ViewModels\Commands\CreateCommandDek.cs" />
     <Compile Include="ViewModels\Commands\DelateCommand.cs" />

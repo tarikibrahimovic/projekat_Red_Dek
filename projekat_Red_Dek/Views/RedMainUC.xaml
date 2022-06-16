@@ -15,16 +15,17 @@
             <RowDefinition ></RowDefinition>
             <RowDefinition Height="auto"></RowDefinition>
         </Grid.RowDefinitions>
-        <StackPanel Grid.Column="0" Grid.Row="2" Background="LightGreen">
+        <StackPanel Grid.Column="0" Grid.Row="2" Background="DarkMagenta">
             <StackPanel Orientation="Horizontal">
-                <TextBox Width="110" HorizontalAlignment="Left" Margin="0 0 10 0" Text="{Binding Query, Mode=TwoWay ,UpdateSourceTrigger=PropertyChanged}"/>
+                <TextBox Width="100" HorizontalAlignment="Left" Margin="0 0 10 0" Text="{Binding Query, Mode=TwoWay ,UpdateSourceTrigger=PropertyChanged}"/>
                 <Button Content="Ucitaj element" Width="100" Command="{Binding CreateCommand}" CommandParameter="{Binding Query}"/>
-            </StackPanel>
-            <StackPanel Orientation="Horizontal">
-                <Button Content="Ukloni element" Width="100" HorizontalAlignment="Left" Command="{Binding DelateCommand}"/>
+                <Button Content="Ucitaj red" Width="100" HorizontalAlignment="Left" Margin="340 0 0 0" Command="{Binding LoadCommand}"/>
                 <Button Content="Sacuvaj red" Width="100" HorizontalAlignment="Left" Margin="10 0 0 0" Command="{Binding SaveCommand}"/>
-                <Button Content="Ucitaj red" Width="100" HorizontalAlignment="Left" Margin="10 0 0 0" Command="{Binding LoadCommand}"/>
-                <Button Content="DEK" Width="75" HorizontalAlignment="Right" Margin="100 0 10 0" Click="Button_Click"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin=" 0 4 0 0">
+                <Button Content="Ukloni element" Width="100" HorizontalAlignment="Left" Command="{Binding DelateCommand}"/>
+                <Button Content="Ukloni sve" Width="100" Command="{Binding ClearCommand}" Margin="10 0 0 0"/>
+                <Button Content="DEK" Width="75" HorizontalAlignment="Right" Margin="450 0 10 0" Click="Button_Click"/>
             </StackPanel>
         </StackPanel>
 
@@ -47,8 +48,10 @@
                     </ItemsControl.ItemContainerStyle>
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <TextBlock Text="{Binding Vrednost}"
-                                       Width="30" Height="30" Background="Tan" TextAlignment="Center"/>
+                            <Border BorderThickness="3" BorderBrush="Black">
+                                <TextBlock Text="{Binding Vrednost}"
+                                       Width="30" Height="30" Background="Transparent" TextAlignment="Center"/>
+                            </Border>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>

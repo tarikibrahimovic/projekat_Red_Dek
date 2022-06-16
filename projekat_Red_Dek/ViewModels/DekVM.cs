@@ -22,7 +22,6 @@ namespace projekat_Red_Dek.ViewModels
         public List<Linija> NizLinija { get; set; }
         public Red Dek { get; set; }
         private double windowWidth;
-
         private double windowHeight;
         public string nazivDeka { get; set; }
         public string dekZaPretrazit { get; set; }
@@ -31,8 +30,28 @@ namespace projekat_Red_Dek.ViewModels
         public LoadCommandDek LoadCommandDek { get; }
         public CreateCommandDek CreateCommandDek { get; }
         public DeleteCommandDek DeleteCommandDek { get; }
+        public ClearCommandDek ClearCommandDek { get; }
 
         public DB baza;
+        private int mestoDod;
+        private List<string> vrednostiClanova;
+
+        public List<string> VrednostiClanova
+        {
+            get { return vrednostiClanova; }
+            set { vrednostiClanova = value; }
+        }
+
+        public int MestoDod
+        {
+            get { return mestoDod; }
+            set
+            {
+                mestoDod = value;
+                OnPropertyChanged("MestoDod");
+            }
+        }
+
 
         public double WindowHeight
         {
@@ -79,18 +98,29 @@ namespace projekat_Red_Dek.ViewModels
             LoadCommandDek = new LoadCommandDek(this);
             CreateCommandDek = new CreateCommandDek(this);
             DeleteCommandDek = new DeleteCommandDek(this);
+            ClearCommandDek = new ClearCommandDek(this);
             baza = new DB();
             Dek = new Red();
             DekPrikaz = new ObservableCollection<Clan>();
             LinijaPrikaz = new ObservableCollection<Linija>();
             NizObjekata = new List<Clan>();
             NizLinija = new List<Linija>();
+            VrednostiClanova = new List<string>();
             BrojReda = 1;
+            MestoDod = 0;
         }
 
         public void DodajObjekat()
         {
-            nacrtaj(Query);
+            if (Query.Length > 6)
+            {
+                nacrtaj(Query.Substring(0, 6));
+            }
+            else
+            {
+                nacrtaj(Query);
+            }
+            Query = "";
         }
         public void nacrtaj(string v)
         {
@@ -108,9 +138,24 @@ namespace projekat_Red_Dek.ViewModels
             }
         }
 
+        public void promeniVrednosti()
+        {
+            if (MestoDod == 1)
+            {
+                for (int i = 3; i < NizObjekata.Count; i++)
+                {
+                    NizObjekata[i].Vrednost = VrednostiClanova[i - 3];
+                }
+                NizObjekata[2].Vrednost = VrednostiClanova[VrednostiClanova.Count - 1];
+                string pom = VrednostiClanova[VrednostiClanova.Count - 1];
+                VrednostiClanova.RemoveAt(VrednostiClanova.Count - 1);
+                VrednostiClanova.Insert(0, pom);
+                mestoDod = 0;
+            }
+        }
+
         public List<Clan> Dodaj(Clan c, string value)
         {
-            c.Vrednost = value;
             if (NizObjekata.Count == 0)
             {
                 BrojReda = 1;
@@ -149,6 +194,9 @@ namespace projekat_Red_Dek.ViewModels
                 izbrisiLiniju(c.Prethodni, poslednji);
                 NizObjekata.Add(c);
             }
+            c.Vrednost = value;
+            VrednostiClanova.Add(value);
+            promeniVrednosti();
             CanvasHeight = NizObjekata[1].Pozicija.Y + 70;
             return NizObjekata;
         }
@@ -178,7 +226,7 @@ namespace projekat_Red_Dek.ViewModels
         public void proveriPoziciju()
         {
             Clan poslednji = NizObjekata[1].Prethodni;
-            if (poslednji.Pozicija.X >= WindowWidth / 2 - 40)
+            if (poslednji.Pozicija.X >= WindowWidth / 2 - 20)
             {
                 BrojReda++;
                 poslednji.Pozicija.Y = poslednji.Prethodni.Pozicija.Y + 70;
@@ -199,8 +247,32 @@ namespace projekat_Red_Dek.ViewModels
 
         public void nacrtajLiniju(Clan c1, Clan c2)
         {
-            Linija l = new Linija(c1, c2);
-            NizLinija.Add(l);
+            double x1 = c1.Pozicija.X;
+            double x2 = c2.Pozicija.X + 32;
+            if (NizObjekata.Count == 2)
+            {
+                Linija l = new Linija(x1, c1.Pozicija.Y, x2, c2.Pozicija.Y);
+                l.Desni = c2;
+                l.Levi = c1;
+                NizLinija.Add(l);
+            }
+            else
+            {
+                if (BrojReda % 2 == 1)
+                {
+                    Linija l = new Linija(x1 + 32, c1.Pozicija.Y, x2 - 32, c2.Pozicija.Y);
+                    NizLinija.Add(l);
+                    l.Desni = c2;
+                    l.Levi = c1;
+                }
+                else
+                {
+                    Linija l = new Linija(x1, c1.Pozicija.Y, x2, c2.Pozicija.Y);
+                    NizLinija.Add(l);
+                    l.Desni = c2;
+                    l.Levi = c1;
+                }
+            }
         }
 
         public void izbrisiLiniju(Clan c1, Clan c2)
@@ -246,9 +318,19 @@ namespace projekat_Red_Dek.ViewModels
                 }
                 else
                 {
-                    for (int i = 3; i < NizObjekata.Count; i++)
+                    if (MestoDod == 0)
                     {
-                        vrednosti.Add(NizObjekata[i].Vrednost);
+                        for (int i = 2; i < NizObjekata.Count - 1; i++)
+                        {
+                            vrednosti.Add(NizObjekata[i].Vrednost);
+                        }
+                    }
+                    else
+                    {
+                        for (int i = 3; i < NizObjekata.Count; i++)
+                        {
+                            vrednosti.Add(NizObjekata[i].Vrednost);
+                        }
                     }
                     NizObjekata.Clear();
                     NizLinija.Clear();
@@ -303,8 +385,28 @@ namespace projekat_Red_Dek.ViewModels
                 MessageBox.Show("Neuspesno ucitano");
             }
         }
-        public event PropertyChangedEventHandler PropertyChanged;
 
+        public void mestoDodavanja(string s)
+        {
+            if (NizObjekata[0].ID == NizObjekata.Where(c => c.Vrednost == s).First().ID)
+            {
+                MestoDod = 1;
+            }
+            else
+            {
+                MestoDod = 0;
+            }
+        }
+
+        public void clearAll()
+        {
+            NizObjekata.Clear();
+            NizLinija.Clear();
+            LinijaPrikaz.Clear();
+            DekPrikaz.Clear();
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
         private void OnPropertyChanged(String propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

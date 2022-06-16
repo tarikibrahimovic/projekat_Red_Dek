@@ -1,4 +1,5 @@
-﻿using projekat_Red_Dek.ViewModels;
+﻿using projekat_Red_Dek.Models;
+using projekat_Red_Dek.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,7 +31,6 @@ namespace projekat_Red_Dek.Views
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             Window win = Window.GetWindow(this);
-            //(win.DataContext as MainVM).SelectedViewModel = new DekVM();
             (win.DataContext as MainVM).SelectedViewModel = new RedVM();
         }
 
@@ -39,6 +39,15 @@ namespace projekat_Red_Dek.Views
             var vm = this.DataContext as DekVM;
             Window mywindow = Window.GetWindow(this);
             vm.postaviDimenzije(mywindow.ActualHeight, mywindow.ActualWidth);
+        }
+
+        private void TextBlock_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            var vm = this.DataContext as DekVM;
+            //var tb = sender as Clan;
+            var tb = sender as TextBlock;
+            tb.Background = Brushes.LightBlue;
+            vm.mestoDodavanja(tb.Text);
         }
     }
 }
