@@ -5,6 +5,8 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,6 +21,7 @@ namespace projekat_Red_Dek.ViewModels
         public ObservableCollection<Linija> LinijaPrikaz { get; set; }
         public List<Clan> NizObjekata { get; set; }
         public List<Linija> NizLinija { get; set; }
+        public ResourcesCommandDek ResourcesCommand { get; }
         public Red Red { get; set; }
         public CreateCommand CreateCommand { get; set; }
         public DelateCommand DelateCommand { get; }
@@ -31,10 +34,9 @@ namespace projekat_Red_Dek.ViewModels
         private double windowHeight;
         public string nazivReda { get; set; }
         public string redZaPretrazit { get; set; }
-
         public int BrojReda { get; set; }
-
         public DB baza;
+        public int T;
 
         public double WindowHeight
         {
@@ -88,7 +90,9 @@ namespace projekat_Red_Dek.ViewModels
             LinijaPrikaz = new ObservableCollection<Linija>();
             NizObjekata = new List<Clan>();
             NizLinija = new List<Linija>();
+            ResourcesCommand = new ResourcesCommandDek(this);
             BrojReda = 1;
+            T = 0;
         }
 
         public void DodajObjekat()
@@ -254,16 +258,19 @@ namespace projekat_Red_Dek.ViewModels
             WindowHeight = visina;
             List<string> vrednosti = new List<string>();
             int brojClanova = NizObjekata.Count;
-
-            for (int i = 2; i < brojClanova; i++)
+            T++;
+            if (T % 3 == 0)
             {
-                vrednosti.Add(NizObjekata[i].Vrednost);
-            }
-            NizObjekata.Clear();
-            NizLinija.Clear();
-            foreach (string v in vrednosti)
-            {
-                nacrtaj(v);
+                for (int i = 2; i < brojClanova; i++)
+                {
+                    vrednosti.Add(NizObjekata[i].Vrednost);
+                }
+                NizObjekata.Clear();
+                NizLinija.Clear();
+                foreach (string v in vrednosti)
+                {
+                    nacrtaj(v);
+                }
             }
         }
 
@@ -342,6 +349,12 @@ namespace projekat_Red_Dek.ViewModels
             NizLinija.Clear();
             LinijaPrikaz.Clear();
             RedPrikaz.Clear();
+        }
+        
+        public void Resources()
+        {
+            string path = $"{Directory.GetParent(Directory.GetParent(Directory.GetCurrentDirectory()).FullName)}\\Resources\\Queue_and_Deque.pdf";
+            Process.Start(path);
         }
         public event PropertyChangedEventHandler PropertyChanged;
 

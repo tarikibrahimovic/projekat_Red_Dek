@@ -1,6 +1,8 @@
 ﻿using projekat_Red_Dek.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -30,18 +32,14 @@ namespace projekat_Red_Dek.Views
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             Window win = Window.GetWindow(this);
-            //(win.DataContext as MainVM).SelectedViewModel = new DekVM();
             (win.DataContext as MainVM).SelectedViewModel = new DekVM();
         }
 
         private void UserControl_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             var vm = this.DataContext as RedVM;
-            //UserControl mywindow = sender as UserControl;
             Window mywindow = Window.GetWindow(this);
-            double width = mywindow.ActualWidth;
-            double height = mywindow.ActualHeight;
             vm.postaviDimenzije(mywindow.ActualHeight, mywindow.ActualWidth);
-        }
+        }        
     }
 }

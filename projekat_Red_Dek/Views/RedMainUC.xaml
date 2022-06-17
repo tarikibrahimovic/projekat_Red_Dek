@@ -2,8 +2,7 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:projekat_Red_Dek.Views"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:vm="clr-namespace:projekat_Red_Dek.ViewModels"
              mc:Ignorable="d" 
              MinHeight="400" MinWidth="800" Background="White" SizeChanged="UserControl_SizeChanged">
@@ -25,7 +24,8 @@
             <StackPanel Orientation="Horizontal" Margin=" 0 4 0 0">
                 <Button Content="Ukloni element" Width="100" HorizontalAlignment="Left" Command="{Binding DelateCommand}"/>
                 <Button Content="Ukloni sve" Width="100" Command="{Binding ClearCommand}" Margin="10 0 0 0"/>
-                <Button Content="DEK" Width="75" HorizontalAlignment="Right" Margin="450 0 10 0" Click="Button_Click"/>
+                <Button Content="Recources" Width="100" Command="{Binding ResourcesCommand}" Margin="350 0 10 0"/>
+                <Button Content="DEK" Width="75" HorizontalAlignment="Right" Margin="10 0 10 0" Click="Button_Click"/>
             </StackPanel>
         </StackPanel>
 
